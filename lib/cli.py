@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 import ipdb
 from db.models import Info
 from db.bikes import Bike
+from db.locations import Locker
 import click
 from tabulate import tabulate
 
@@ -22,11 +23,9 @@ def welcome():
     click.echo(
         click.style(
             "Welcome to the Sracket CLI!",
-            underline=True,
-            blink=True,
+            blink=False,
             bold=True,
             fg="green",
-            bg="bright_white",
         )
     )
     username()
@@ -40,14 +39,14 @@ def username(name):
     current_user = new_user
     session.add(new_user)
     session.commit()
-    display_table()
+    # display_table()
+    enter_locations()
 
 
 @click.command()
 @click.option("--bike_id", prompt="Please enter bike ID", type=int)
 def select_bike(bike_id):
     global current_user
-    click.clear()
     selected_bike = session.query(Bike).filter(Bike.id == bike_id).first()
     user = session.query(Info).filter(Info.name == current_user.name).first()
     user.bike = selected_bike.id
@@ -59,14 +58,22 @@ def select_bike(bike_id):
     select_option()
 
 
-def display_table():
-    bikes = session.query(Bike).all()
-    bike_list = [b.name for b in bikes]
-    headers = [b.id for b in bikes]
+@click.command()
+@click.option("--location_id", prompt="Please select current location ID", type=int)
+def enter_locations(location_id):
+    locker = session.query(Locker).filter(Locker.id == location_id).first()
+    # print(locker)
+    display_table(locker)
 
-    table = tabulate([bike_list], headers, tablefmt="mixed_grid")
-    click.echo("Please browse our current collection of cool looking Bikes!")
-    click.echo(click.style((table), bold=True, bg="bright_white"))
+
+def display_table(locker):
+    bikes = [bike.name for bike in locker.bikes]
+    click.echo(locker)
+    headers = [b.id for b in locker.bikes]
+    table = tabulate([bikes], headers, tablefmt="mixed_grid")
+    click.echo("Please browse our current collection of Spracket Bikes!")
+    click.echo(click.style(table, bg="bright_yellow", fg="black", bold=True))
+    # click.clear()
     select_bike()
 
 

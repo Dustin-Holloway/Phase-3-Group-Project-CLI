@@ -22,17 +22,26 @@ if __name__ == "__main__":
     session.query(Locker).delete()
     session.commit()
 
-print("Seeding bikes...")
+    print("Seeding bikes...")
 
+    lockers = []
+    for i in range(5):
+        locker = Locker(locker_location=fake.address())
+        session.add(locker)
+        lockers.append(locker)
 
-bike = [
-    Bike(
-        id=fake.random_int(min=10000, max=99999), name=fake.color_name(), available=True
-    )
-    for n in range(12)
-]
+    session.commit()
 
-locker = [Locker(locker_location=fake.address()) for i in range(5)]
+    for locker in lockers:
+        bikes = [
+            Bike(
+                name=fake.color_name(),
+                available=True,
+                id=fake.random_int(min=10000, max=99999),
+            )
+            for n in range(12)
+        ]  # Associate each bike with the current locker
+        locker.bikes = bikes
+        session.add(locker)
 
-session.add_all(bike + locker)
-session.commit()
+    session.commit()
