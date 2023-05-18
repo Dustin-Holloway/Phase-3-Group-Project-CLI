@@ -11,6 +11,8 @@ class Locker(Base):
     locker_location = Column(String())
     bikes = []
     bikes = relationship("Bike", secondary=bike_locker, back_populates="lockers")
+    user_info = Column(Integer(), ForeignKey("information.id"))
+    info = relationship("Info", back_populates="lockers")
 
     def __repr__(self):
         return f"Locker {self.id}: " + f"{self.locker_location}"

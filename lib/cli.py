@@ -2,12 +2,11 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import ipdb
+import click
+from tabulate import tabulate
 from db.models import Info
 from db.bikes import Bike
 from db.locations import Locker
-import click
-from tabulate import tabulate
 
 database_path = "db/bikedatabase.db"
 
@@ -62,6 +61,7 @@ def select_bike(bike_id):
 @click.option("--location_id", prompt="Please select current location ID", type=int)
 def enter_locations(location_id):
     locker = session.query(Locker).filter(Locker.id == location_id).first()
+    lock
     # print(locker)
     display_table(locker)
 
@@ -72,7 +72,7 @@ def display_table(locker):
     headers = [b.id for b in locker.bikes]
     table = tabulate([bikes], headers, tablefmt="mixed_grid")
     click.echo("Please browse our current collection of Spracket Bikes!")
-    click.echo(click.style(table, bg="bright_yellow", fg="black", bold=True))
+    click.echo(click.style((table), bg="bright_yellow", fg="black", bold=True))
     # click.clear()
     select_bike()
 

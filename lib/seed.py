@@ -1,10 +1,8 @@
-# !/usr/bin/env python3
-
 from sqlalchemy.orm import sessionmaker
 from faker import Faker
 from sqlalchemy import create_engine
 from db.models import Info, Base
-from db.bikes import Bike
+from db.bikes import Bike, bike_locker
 from db.locations import Locker
 
 fake = Faker()
@@ -20,6 +18,7 @@ if __name__ == "__main__":
     session.query(Bike).delete()
     session.query(Info).delete()
     session.query(Locker).delete()
+    session.query(bike_locker).delete()
     session.commit()
 
     print("Seeding bikes...")
