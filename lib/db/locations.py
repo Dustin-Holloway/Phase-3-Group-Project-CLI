@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from models import Base
+from db.models import Base
 
 
 class Locker(Base):
