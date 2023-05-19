@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from db.models import Base
+from db.users import Base
 from db.bikes import bike_locker
 
 
@@ -9,10 +9,8 @@ class Locker(Base):
 
     id = Column(Integer(), primary_key=True)
     locker_location = Column(String())
-    bikes = []
     bikes = relationship("Bike", secondary=bike_locker, back_populates="lockers")
-    user_info = Column(Integer(), ForeignKey("information.id"))
-    info = relationship("Info", back_populates="lockers")
+    # bikes = relationship("Bike", back_populates="lockers")
 
     def __repr__(self):
         return f"Locker {self.id}: " + f"{self.locker_location}"

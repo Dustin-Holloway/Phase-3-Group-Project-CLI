@@ -1,9 +1,9 @@
 from sqlalchemy.orm import sessionmaker
 from faker import Faker
 from sqlalchemy import create_engine
-from db.models import Info, Base
+from db.users import User, Base
 from db.bikes import Bike, bike_locker
-from db.locations import Locker
+from db.lockers import Locker
 
 fake = Faker()
 database_path = "db/bikedatabase.db"
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     session = Session()
 
     session.query(Bike).delete()
-    session.query(Info).delete()
+    session.query(User).delete()
     session.query(Locker).delete()
     session.query(bike_locker).delete()
     session.commit()
@@ -35,8 +35,8 @@ if __name__ == "__main__":
         bikes = [
             Bike(
                 name=fake.color_name(),
-                available=True,
                 id=fake.random_int(min=10000, max=99999),
+                locker_id=locker.id,
             )
             for n in range(12)
         ]  # Associate each bike with the current locker
