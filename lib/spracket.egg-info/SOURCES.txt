@@ -1,0 +1,8 @@
+cli.py
+setup.py
+spracket.egg-info/PKG-INFO
+spracket.egg-info/SOURCES.txt
+spracket.egg-info/dependency_links.txt
+spracket.egg-info/entry_points.txt
+spracket.egg-info/requires.txt
+spracket.egg-info/top_level.txt
